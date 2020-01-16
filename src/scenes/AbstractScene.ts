@@ -9,6 +9,8 @@ import { ASSETS } from '../constants/assets';
 import { MONSTERS } from '../constants/monsters';
 
 const CAMERA_LERP = 1;
+
+//플레이어의 초기 위치 설정
 const PLAYER_INITIAL_POSITION = {
   x: 50,
   y: 200,
@@ -18,6 +20,10 @@ interface InterSceneData {
   comesFrom: string;
 }
 
+/**
+ * 맵을 구성 하기 위한 추상 클래스
+ * 플레이어, 커서, npc, 몬스터, map 등등 한 map 에 대한 종합적인 세팅을 진행한다.
+ */
 export abstract class AbstractScene extends Phaser.Scene {
   public player: Player;
   public cursors: CursorKeys;
@@ -60,11 +66,13 @@ export abstract class AbstractScene extends Phaser.Scene {
     this.player.updatePlayer(keyPressed);
   }
 
+  // 초기 설정 - Scene 객체 생성시 호출 된다.
   protected init(data: InterSceneData) {
-    this.createMapWithLayers();
+    this.createMapWithLayers(); // map 세팅 및 Layer 세팅
 
     this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels);
 
+    // 다음 stage 출구를 찾는다
     const levelChangerObjectLayer = this.map.objects.find(
       o => o.name === MAP_CONTENT_KEYS.objects.ZONES,
     );
@@ -112,6 +120,9 @@ export abstract class AbstractScene extends Phaser.Scene {
     this.cursors = this.input.keyboard.createCursorKeys();
   }
 
+  /**
+   * map 세팅 및 Layer 세팅
+   */
   private createMapWithLayers() {
     this.map = this.make.tilemap({ key: this.mapKey });
     const tileset = this.map.addTilesetImage(ASSETS.TILESET, ASSETS.IMAGES.TILES, 16, 16, 0, 0);
@@ -121,7 +132,7 @@ export abstract class AbstractScene extends Phaser.Scene {
       deco: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.DECORATION, tileset, 0, 0),
       bridge: this.map.createStaticLayer(MAP_CONTENT_KEYS.layers.BRIDGE, tileset, 0, 0),
     };
-    this.layers.terrain.setCollisionByProperty({ collides: true });
+    this.layers.terrain.setCollisionByProperty({ collides: true }); // tiled 에서 property로 collides 로 설정한 부분은 충돌하도록 설정
     this.layers.deco.setCollisionByProperty({ collides: true });
   }
 

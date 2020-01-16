@@ -2,6 +2,9 @@ import { Orientation } from '../geometry/orientation';
 import { Character } from './Character';
 import { ASSETS } from '../constants/assets';
 
+/**
+ * 몬스터 정의
+ */
 export abstract class Monster extends Character {
   private static WANDER_DELAY = () => 1000 + 1000 * Math.random();
   private static WANDER_LENGTH = () => 1000 + 5000 * Math.random();
@@ -10,7 +13,7 @@ export abstract class Monster extends Character {
   protected abstract MONSTER_IDLE_DOWN;
   protected MONSTER_SPEED = 20;
   protected MONSTER_HIT_DELAY = 100;
-  protected CHASING_DISTANCE = 100;
+  protected CHASING_DISTANCE = 100; // 플레이어와 몬스터간의 추적 기준 거리
 
   protected hp: number;
   private chasingPlayerTimerEvent: Phaser.Time.TimerEvent;
@@ -56,11 +59,13 @@ export abstract class Monster extends Character {
     deathAnim.play(ASSETS.ANIMATIONS.MONSTER_DEATH, false);
   };
 
+  // 추적 할지 안할지 정의
   private shouldChase = () => {
-    const playerPoint = this.scene.player.getCenter();
-    const monsterPoint = this.getCenter();
-    const distance = monsterPoint.distance(playerPoint);
+    const playerPoint = this.scene.player.getCenter(); // 플레이어 위치
+    const monsterPoint = this.getCenter(); // 몬스터 위치
+    const distance = monsterPoint.distance(playerPoint); // 플레이어와 몬스터의 거리
 
+    //추적 범위안에 있다면 추적을 한다
     if (distance < this.CHASING_DISTANCE) {
       return true;
     }

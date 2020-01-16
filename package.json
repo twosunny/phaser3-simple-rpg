@@ -5,7 +5,8 @@
     "pretest": "yarn lint && tsc --project .",
     "test": "jest",
     "lint": "eslint src --ext .ts --cache",
-    "deploy": "yarn build && gh-pages -d dist"
+    "deploy": "yarn build && gh-pages -d dist",
+    "dev-server": "webpack-dev-server --open --hot --inline"
   },
   "dependencies": {
     "awesome-typescript-loader": "^5.1.0",

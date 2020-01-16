@@ -2,20 +2,31 @@ import { MAPS } from '../constants/maps';
 import { ASSETS } from '../constants/assets';
 import { SCENES } from '../constants/scenes';
 
+/**
+ * 게임 초기 설정
+ * 리소스(맵, 오브젝트, 애니메이션) 리딩 및 설정
+ */
 export class Preloader extends Phaser.Scene {
+  /**
+   * Phaser 실행시 제일 처음 실행되는 preload()
+   */
   protected preload() {
-    this.loadAssets();
+    this.loadAssets(); // 리소스(에셋) 로딩
   }
 
+  /**
+   * 로딩된 리소스를 가지고, 애니메이션 설정등의 설정을 진행
+   */
   protected create() {
     this.createAnimations();
-    this.scene.launch(SCENES.FIRST_LEVEL);
-    this.scene.launch(SCENES.GAME_MANAGER);
+    this.scene.launch(SCENES.FIRST_LEVEL); // 첫번째 씬(첫번째 맵) 로딩
+    this.scene.launch(SCENES.GAME_MANAGER); //
   }
 
   private loadAssets() {
-    this.load.tilemapTiledJSON(MAPS.firstLevel.key, `assets/${MAPS.firstLevel.file}`);
-    this.load.tilemapTiledJSON(MAPS.secondLevel.key, `assets/${MAPS.secondLevel.file}`);
+    // Tiled 에서 만든 맵을 로딩한다.
+    this.load.tilemapTiledJSON(MAPS.firstLevel.key, `assets/${MAPS.firstLevel.file}`); // 첫번째 맵 로딩
+    this.load.tilemapTiledJSON(MAPS.secondLevel.key, `assets/${MAPS.secondLevel.file}`); // 두번때 맵 로딩
 
     // Images
     this.load.image(ASSETS.IMAGES.LOGO, 'assets/logo.png');
@@ -27,6 +38,7 @@ export class Preloader extends Phaser.Scene {
     this.load.image(ASSETS.IMAGES.TOMB, 'assets/tomb.png');
 
     // Spritesheets
+    // 각 스프라이트를 정의 한다
     this.load.spritesheet(
       ASSETS.IMAGES.PLAYER_IDLE_DOWN,
       'assets/spritesheets/hero/idle/hero-idle-front.png',
@@ -168,6 +180,9 @@ export class Preloader extends Phaser.Scene {
     });
   }
 
+  /**
+   * 애니메이션 정의
+   */
   private createAnimations() {
     this.anims.create({
       key: ASSETS.ANIMATIONS.PLAYER_MOVE_LEFT,

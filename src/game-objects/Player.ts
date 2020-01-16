@@ -9,6 +9,9 @@ const HIT_DELAY = 500;
 const PLAYER_SPEED = 80;
 const PLAYER_RELOAD = 500;
 
+/**
+ * 플레이어 정의
+ */
 export class Player extends Character {
   public static MAX_HP = 3;
 
@@ -55,7 +58,7 @@ export class Player extends Character {
 
     this.orientation = Orientation.Down;
     this.lastTimeHit = new Date().getTime();
-    this.setCollideWorldBounds(true);
+    this.setCollideWorldBounds(true); // 월드 경계와 충돌하도록 설정
     this.setOrigin(0.5, 0.7);
     this.setSize(10, 10);
     this.setDepth(10);
@@ -71,7 +74,7 @@ export class Player extends Character {
           case Player.SHOOT_ANIMATION.right.anim:
           case Player.SHOOT_ANIMATION.up.anim:
           case Player.SHOOT_ANIMATION.down.anim:
-            this.concludeShoot();
+            this.concludeShoot(); // 무기 생성 및 무기 충돌 설정
             break;
           default:
             break;
@@ -208,9 +211,10 @@ export class Player extends Character {
 
   private concludeShoot = () => {
     this.isShooting = false;
-    const arrow = new Arrow(this.scene, this, this.orientation);
+    const arrow = new Arrow(this.scene, this, this.orientation); // 무기 객체 생성
+    //무기와 몬스터가 출돌했을때
     this.scene.physics.add.collider(arrow, this.scene.monsterGroup, (a: Arrow, m: Monster) => {
-      m.loseHp(a);
+      m.loseHp(a); // 몬스터의 hp를 깎는다
     });
   };
 
