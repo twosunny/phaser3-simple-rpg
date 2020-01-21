@@ -85,6 +85,9 @@ export abstract class Monster extends Character {
     return x < 0 ? Orientation.Left : Orientation.Right;
   }
 
+  /**
+   * 몬스터가 플레이어 추적하는 로직
+   */
   private moveTowardsPlayer() {
     if (!this.active) {
       return;
@@ -123,6 +126,9 @@ export abstract class Monster extends Character {
     this.beIdle();
   }
 
+  /**
+   * 몬스터가 플레이어를 추적하도록 이벤트 설정
+   */
   private startChasing() {
     this.chasingPlayerTimerEvent = this.scene.time.addEvent({
       delay: 500,
